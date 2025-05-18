@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Typewriter from 'typewriter-effect';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Clock, Signal, Wifi, Radio } from 'lucide-react';
 
 interface Scene {
   id: number;
@@ -51,6 +51,24 @@ const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
   const [currentScene, setCurrentScene] = useState(0);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [signalStrength, setSignalStrength] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const signalInterval = setInterval(() => {
+      setSignalStrength(prev => (prev + 1) % 5);
+    }, 800);
+
+    return () => clearInterval(signalInterval);
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -72,9 +90,52 @@ const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
     }
   };
 
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', { 
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
+
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center overflow-hidden">
       <div className="smoke-effect"></div>
+      
+      {/* Futuristic HUD Elements */}
+      <div className="fixed top-0 left-0 w-full p-4 flex justify-between items-start z-20 text-cyan-glow font-orbitron text-sm">
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 border border-cyan-glow/30 bg-black/30 backdrop-blur-sm px-3 py-1 rounded">
+            <Clock className="h-4 w-4" />
+            <span>{formatTime(currentTime)}</span>
+          </div>
+          <div className="flex items-center space-x-2 border border-cyan-glow/30 bg-black/30 backdrop-blur-sm px-3 py-1 rounded">
+            <Signal className="h-4 w-4" />
+            <div className="flex space-x-1">
+              {[...Array(5)].map((_, i) => (
+                <div 
+                  key={i}
+                  className={`w-1 h-3 ${i <= signalStrength ? 'bg-cyan-glow' : 'bg-cyan-glow/30'}`}
+                  style={{ height: `${(i + 1) * 4}px` }}
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 border border-cyan-glow/30 bg-black/30 backdrop-blur-sm px-3 py-1 rounded">
+            <Wifi className="h-4 w-4" />
+            <span>CONNECTED</span>
+          </div>
+          <div className="flex items-center space-x-2 border border-cyan-glow/30 bg-black/30 backdrop-blur-sm px-3 py-1 rounded">
+            <Radio className="h-4 w-4" />
+            <span>TRANSMISSION {currentScene + 1}/{scenes.length}</span>
+          </div>
+        </div>
+      </div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={currentScene}
@@ -143,6 +204,12 @@ const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
                 />
               ))}
             </div>
+
+            {/* Futuristic Corner Elements */}
+            <div className="absolute top-4 left-4 w-32 h-32 border-l-2 border-t-2 border-cyan-glow/50 rounded-tl-lg"></div>
+            <div className="absolute top-4 right-4 w-32 h-32 border-r-2 border-t-2 border-cyan-glow/50 rounded-tr-lg"></div>
+            <div className="absolute bottom-4 left-4 w-32 h-32 border-l-2 border-b-2 border-cyan-glow/50 rounded-bl-lg"></div>
+            <div className="absolute bottom-4 right-4 w-32 h-32 border-r-2 border-b-2 border-cyan-glow/50 rounded-br-lg"></div>
           </div>
         </motion.div>
       </AnimatePresence>
