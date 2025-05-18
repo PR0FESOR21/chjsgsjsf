@@ -46,6 +46,48 @@ body {
   animation: scanlines 10s linear infinite;
 }
 
+/* Smoke Effect */
+.smoke-effect {
+  @apply fixed inset-0 pointer-events-none z-10;
+  background: url('https://images.pexels.com/photos/5476414/pexels-photo-5476414.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') repeat;
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  animation: smoke 20s linear infinite;
+}
+
+.smoke-text-effect {
+  @apply absolute inset-0 pointer-events-none;
+  background: url('https://images.pexels.com/photos/5476414/pexels-photo-5476414.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') repeat;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+  animation: smoke-text 15s linear infinite;
+  mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+}
+
+@keyframes smoke {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.5);
+  }
+  50% {
+    transform: translate3d(-10%, -10%, 0) scale(1.6);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.5);
+  }
+}
+
+@keyframes smoke-text {
+  0% {
+    transform: translate3d(0, 0, 0) scale(2);
+  }
+  50% {
+    transform: translate3d(-5%, -5%, 0) scale(2.1);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(2);
+  }
+}
+
 .glow-text {
   text-shadow: 0 0 10px var(--color-cyan), 0 0 20px var(--color-cyan);
 }

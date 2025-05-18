@@ -74,6 +74,7 @@ const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
 
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center overflow-hidden">
+      <div className="smoke-effect"></div>
       <AnimatePresence mode="wait">
         <motion.div
           key={currentScene}
@@ -97,7 +98,8 @@ const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
           {/* Content */}
           <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
             <div className="max-w-3xl text-center">
-              <div className="text-2xl md:text-4xl text-cyan-glow font-orbitron mb-8 min-h-[120px]">
+              <div className="text-2xl md:text-4xl text-cyan-glow font-orbitron mb-8 min-h-[120px] relative">
+                <div className="smoke-text-effect"></div>
                 <Typewriter
                   onInit={(typewriter) => {
                     typewriter
