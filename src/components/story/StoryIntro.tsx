@@ -24,7 +24,7 @@ const scenes: Scene[] = [
     location: "Galaksi Luar - Planet Smoketron",
     text: [
       "Di sudut jauh galaksi…",
-      "Tersembunyi sebuah dunia yang hampir terlupakan — Smoketron.",
+      "Tersembunyi sebuah dunia yang hampir terlupakan — Smoketron.<br>",
       "Planet yang dulunya penuh cahaya… kini redup, retak, dan nyaris tak bernyawa."
     ],
     background: "https://images.pexels.com/photos/5738242/pexels-photo-5738242.jpeg",
