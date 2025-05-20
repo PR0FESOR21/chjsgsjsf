@@ -7,10 +7,13 @@ interface Scene {
   location: string;
   text: string[];
   background: string;
-  character: string;
-  characterAnimation?: {
-    initial: any;
-    animate: any;
+  character: {
+    image: string;
+    position: 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+    animation: {
+      initial: any;
+      animate: any;
+    };
   };
 }
 
@@ -28,10 +31,13 @@ const scenes: Scene[] = [
       "Planet yang dulunya penuh cahaya… kini redup, retak, dan nyaris tak bernyawa."
     ],
     background: "https://images.pexels.com/photos/5738242/pexels-photo-5738242.jpeg",
-    character: "https://images.pexels.com/photos/5476414/pexels-photo-5476414.jpeg",
-    characterAnimation: {
-      initial: { scale: 1.2, y: 50, opacity: 0 },
-      animate: { scale: 1, y: 0, opacity: 0.6 }
+    character: {
+      image: "https://images.pexels.com/photos/5476414/pexels-photo-5476414.jpeg",
+      position: "bottom-right",
+      animation: {
+        initial: { scale: 1.2, y: 50, opacity: 0 },
+        animate: { scale: 1, y: 0, opacity: 0.6 }
+      }
     }
   },
   {
@@ -44,10 +50,13 @@ const scenes: Scene[] = [
       "Partikel langka — sumber energi tertinggi di alam semesta."
     ],
     background: "https://images.pexels.com/photos/8100784/pexels-photo-8100784.jpeg",
-    character: "https://images.pexels.com/photos/6153354/pexels-photo-6153354.jpeg",
-    characterAnimation: {
-      initial: { x: -100, opacity: 0 },
-      animate: { x: 0, opacity: 0.7 }
+    character: {
+      image: "https://images.pexels.com/photos/6153354/pexels-photo-6153354.jpeg",
+      position: "center-left",
+      animation: {
+        initial: { x: -100, opacity: 0 },
+        animate: { x: 0, opacity: 0.7 }
+      }
     }
   },
   {
@@ -60,10 +69,13 @@ const scenes: Scene[] = [
       "Di dalam jaringan yang disebut oleh mereka... BASE."
     ],
     background: "https://images.pexels.com/photos/6153354/pexels-photo-6153354.jpeg",
-    character: "https://images.pexels.com/photos/8731639/pexels-photo-8731639.jpeg",
-    characterAnimation: {
-      initial: { rotate: 15, scale: 0.8, opacity: 0 },
-      animate: { rotate: 0, scale: 1, opacity: 0.7 }
+    character: {
+      image: "https://images.pexels.com/photos/8731639/pexels-photo-8731639.jpeg",
+      position: "top-center",
+      animation: {
+        initial: { rotate: 15, scale: 0.8, opacity: 0 },
+        animate: { rotate: 0, scale: 1, opacity: 0.7 }
+      }
     }
   },
   {
@@ -75,10 +87,13 @@ const scenes: Scene[] = [
       "Tapi... misi ini tidak bisa dilakukan oleh siapa pun."
     ],
     background: "https://images.pexels.com/photos/87651/earth-blue-planet-globe-planet-87651.jpeg",
-    character: "https://images.pexels.com/photos/8728388/pexels-photo-8728388.jpeg",
-    characterAnimation: {
-      initial: { y: -100, scale: 1.2, opacity: 0 },
-      animate: { y: 0, scale: 1, opacity: 0.7 }
+    character: {
+      image: "https://images.pexels.com/photos/8728388/pexels-photo-8728388.jpeg",
+      position: "center",
+      animation: {
+        initial: { y: -100, scale: 1.2, opacity: 0 },
+        animate: { y: 0, scale: 1, opacity: 0.7 }
+      }
     }
   },
   {
@@ -92,10 +107,13 @@ const scenes: Scene[] = [
       "apa yang sebenarnya sedang dipertaruhkan."
     ],
     background: "https://images.pexels.com/photos/7672252/pexels-photo-7672252.jpeg",
-    character: "https://images.pexels.com/photos/8100784/pexels-photo-8100784.jpeg",
-    characterAnimation: {
-      initial: { scale: 0, rotate: -45, opacity: 0 },
-      animate: { scale: 1, rotate: 0, opacity: 0.7 }
+    character: {
+      image: "https://images.pexels.com/photos/8100784/pexels-photo-8100784.jpeg",
+      position: "bottom-left",
+      animation: {
+        initial: { scale: 0, rotate: -45, opacity: 0 },
+        animate: { scale: 1, rotate: 0, opacity: 0.7 }
+      }
     }
   },
   {
@@ -107,13 +125,31 @@ const scenes: Scene[] = [
       "🛰️ Hanya mereka yang terdaftar dalam relay channel yang akan mendapat akses pertama."
     ],
     background: "https://images.pexels.com/photos/7672252/pexels-photo-7672252.jpeg",
-    character: "https://images.pexels.com/photos/6153354/pexels-photo-6153354.jpeg",
-    characterAnimation: {
-      initial: { scale: 1.5, opacity: 0 },
-      animate: { scale: 1, opacity: 0.3 }
+    character: {
+      image: "https://images.pexels.com/photos/6153354/pexels-photo-6153354.jpeg",
+      position: "center",
+      animation: {
+        initial: { scale: 1.5, opacity: 0 },
+        animate: { scale: 1, opacity: 0.3 }
+      }
     }
   }
 ];
+
+const getPositionClasses = (position: string) => {
+  const positions = {
+    'top-left': 'top-10 left-10',
+    'top-center': 'top-10 left-1/2 -translate-x-1/2',
+    'top-right': 'top-10 right-10',
+    'center-left': 'top-1/2 -translate-y-1/2 left-10',
+    'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+    'center-right': 'top-1/2 -translate-y-1/2 right-10',
+    'bottom-left': 'bottom-10 left-10',
+    'bottom-center': 'bottom-10 left-1/2 -translate-x-1/2',
+    'bottom-right': 'bottom-10 right-10'
+  };
+  return positions[position as keyof typeof positions] || positions['center'];
+};
 
 const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
   const [currentScene, setCurrentScene] = useState(0);
@@ -170,12 +206,12 @@ const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
 
           {/* Character Layer */}
           <motion.div
-            className="absolute inset-0 bg-cover bg-center"
-            initial={scenes[currentScene].characterAnimation?.initial}
-            animate={scenes[currentScene].characterAnimation?.animate}
+            className={`absolute w-64 h-64 bg-cover bg-center ${getPositionClasses(scenes[currentScene].character.position)}`}
+            initial={scenes[currentScene].character.animation.initial}
+            animate={scenes[currentScene].character.animation.animate}
             transition={{ duration: 1.5, ease: "easeOut" }}
             style={{
-              backgroundImage: `url(${scenes[currentScene].character})`
+              backgroundImage: `url(${scenes[currentScene].character.image})`
             }}
           />
 
