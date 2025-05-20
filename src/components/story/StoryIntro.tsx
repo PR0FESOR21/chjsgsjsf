@@ -10,16 +10,36 @@ interface Scene {
   character: {
     image: string;
     position: 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+    size: {
+      width: string;
+      height: string;
+    };
     animation: {
       initial: any;
       animate: any;
     };
   };
+  textPosition?: 'left' | 'right';
 }
 
 interface StoryIntroProps {
   onComplete: () => void;
 }
+
+const getPositionClasses = (position: string) => {
+  const positions = {
+    'top-left': 'top-0 left-0',
+    'top-center': 'top-0 left-1/2 -translate-x-1/2',
+    'top-right': 'top-0 right-0',
+    'center-left': 'top-1/2 -translate-y-1/2 left-0',
+    'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+    'center-right': 'top-1/2 -translate-y-1/2 right-0',
+    'bottom-left': 'bottom-0 left-0',
+    'bottom-center': 'bottom-0 left-1/2 -translate-x-1/2',
+    'bottom-right': 'bottom-0 right-0'
+  };
+  return positions[position as keyof typeof positions] || positions['center'];
+};
 
 const scenes: Scene[] = [
   {
@@ -34,11 +54,16 @@ const scenes: Scene[] = [
     character: {
       image: "https://images.pexels.com/photos/5476414/pexels-photo-5476414.jpeg",
       position: "bottom-right",
+      size: {
+        width: "w-96",
+        height: "h-96"
+      },
       animation: {
         initial: { scale: 1.2, y: 50, opacity: 0 },
         animate: { scale: 1, y: 0, opacity: 0.6 }
       }
-    }
+    },
+    textPosition: "left"
   },
   {
     id: 2,
@@ -53,11 +78,16 @@ const scenes: Scene[] = [
     character: {
       image: "https://images.pexels.com/photos/6153354/pexels-photo-6153354.jpeg",
       position: "center-left",
+      size: {
+        width: "w-72",
+        height: "h-72"
+      },
       animation: {
         initial: { x: -100, opacity: 0 },
         animate: { x: 0, opacity: 0.7 }
       }
-    }
+    },
+    textPosition: "right"
   },
   {
     id: 3,
@@ -72,11 +102,16 @@ const scenes: Scene[] = [
     character: {
       image: "https://images.pexels.com/photos/8731639/pexels-photo-8731639.jpeg",
       position: "top-center",
+      size: {
+        width: "w-80",
+        height: "h-80"
+      },
       animation: {
         initial: { rotate: 15, scale: 0.8, opacity: 0 },
         animate: { rotate: 0, scale: 1, opacity: 0.7 }
       }
-    }
+    },
+    textPosition: "left"
   },
   {
     id: 4,
@@ -90,11 +125,16 @@ const scenes: Scene[] = [
     character: {
       image: "https://images.pexels.com/photos/8728388/pexels-photo-8728388.jpeg",
       position: "center",
+      size: {
+        width: "w-128",
+        height: "h-128"
+      },
       animation: {
         initial: { y: -100, scale: 1.2, opacity: 0 },
         animate: { y: 0, scale: 1, opacity: 0.7 }
       }
-    }
+    },
+    textPosition: "right"
   },
   {
     id: 5,
@@ -110,11 +150,16 @@ const scenes: Scene[] = [
     character: {
       image: "https://images.pexels.com/photos/8100784/pexels-photo-8100784.jpeg",
       position: "bottom-left",
+      size: {
+        width: "w-64",
+        height: "h-64"
+      },
       animation: {
         initial: { scale: 0, rotate: -45, opacity: 0 },
         animate: { scale: 1, rotate: 0, opacity: 0.7 }
       }
-    }
+    },
+    textPosition: "right"
   },
   {
     id: 6,
@@ -128,6 +173,10 @@ const scenes: Scene[] = [
     character: {
       image: "https://images.pexels.com/photos/6153354/pexels-photo-6153354.jpeg",
       position: "center",
+      size: {
+        width: "w-96",
+        height: "h-96"
+      },
       animation: {
         initial: { scale: 1.5, opacity: 0 },
         animate: { scale: 1, opacity: 0.3 }
@@ -135,21 +184,6 @@ const scenes: Scene[] = [
     }
   }
 ];
-
-const getPositionClasses = (position: string) => {
-  const positions = {
-    'top-left': 'top-10 left-10',
-    'top-center': 'top-10 left-1/2 -translate-x-1/2',
-    'top-right': 'top-10 right-10',
-    'center-left': 'top-1/2 -translate-y-1/2 left-10',
-    'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
-    'center-right': 'top-1/2 -translate-y-1/2 right-10',
-    'bottom-left': 'bottom-10 left-10',
-    'bottom-center': 'bottom-10 left-1/2 -translate-x-1/2',
-    'bottom-right': 'bottom-10 right-10'
-  };
-  return positions[position as keyof typeof positions] || positions['center'];
-};
 
 const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
   const [currentScene, setCurrentScene] = useState(0);
@@ -206,7 +240,7 @@ const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
 
           {/* Character Layer */}
           <motion.div
-            className={`absolute w-64 h-64 bg-cover bg-center ${getPositionClasses(scenes[currentScene].character.position)}`}
+            className={`absolute bg-cover bg-center ${getPositionClasses(scenes[currentScene].character.position)} ${scenes[currentScene].character.size.width} ${scenes[currentScene].character.size.height}`}
             initial={scenes[currentScene].character.animation.initial}
             animate={scenes[currentScene].character.animation.animate}
             transition={{ duration: 1.5, ease: "easeOut" }}
@@ -271,7 +305,7 @@ const StoryIntro: React.FC<StoryIntroProps> = ({ onComplete }) => {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="max-w-2xl"
+                className={`max-w-2xl ${scenes[currentScene].textPosition === 'right' ? 'ml-auto' : ''}`}
               >
                 <div className="text-2xl text-cyan-glow font-orbitron">
                   <Typewriter
